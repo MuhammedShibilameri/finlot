@@ -12,7 +12,7 @@
 - [x] **Connect Workspace & MCP Tools**: Dart/Flutter MCP server roots linked.
 - [x] **Initialize Version Control**: Git repo initialized with clean baseline commit.
 - [x] **Configure Reviewers**: Added `.coderabbit.yaml` with Ponytail anti-bloat rules.
-- [ ] **Run Static Analysis & Verification**: Verify `flutter analyze` / `dart analyze` passes with 0 errors.
+- [x] **Run Static Analysis & Verification**: Verify `flutter analyze` / `dart analyze` passes with 0 errors. (Passed: 0 issues found)
 
 ### Phase 2: Feature & Polish Roadmap
 - [ ] **Task 2.1**: UI / UX review and polish (Responsive layout check, Cupertino & Material theme consistency).
