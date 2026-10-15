@@ -1,0 +1,38 @@
+# CodeRabbit Configuration for Finlot (urban_project)
+version: 2
+language: en-US
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+  tools:
+    ast-grep:
+      enabled: true
+    shellcheck:
+      enabled: true
+
+tone_instructions: >
+  Focus on pragmatic engineering, clean architecture, performance, accessibility, 
+  and strict adherence to Flutter/Dart best practices. Enforce YAGNI (You Ain't Gonna Need It) 
+  and flag unnecessary bloat, redundant abstractions, or unhandled null/error states.
+
+rules:
+  - id: flutter-const-constructors
+    message: "Prefer const constructors wherever possible to optimize rebuild cycles."
+    severity: warning
+
+  - id: ponytail-anti-bloat
+    message: "Flag over-engineering: do not introduce unnecessary wrapper classes, deep inheritance trees, or premature utility helpers when standard Flutter widgets or Dart stdlib suffice."
+    severity: warning
+
+  - id: state-leak-check
+    message: "Ensure TextEditingControllers, AnimationControllers, Streams, and FocusNodes are properly disposed in State.dispose()."
+    severity: error
+
+  - id: null-safety-and-error-handling
+    message: "Verify defensive programming: check for potential null dereferences and unhandled asynchronous exceptions in Futures and Streams."
+    severity: error
