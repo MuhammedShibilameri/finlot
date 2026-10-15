@@ -1,6 +1,6 @@
 {
-    "name": "urban_project",
-    "short_name": "urban_project",
+    "name": "FinLot",
+    "short_name": "FinLot",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

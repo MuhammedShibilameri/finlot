@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:urban_project/main.dart';
-import 'package:urban_project/screens/home_screen.dart';
-import 'package:urban_project/screens/onboarding_screen.dart';
-import 'package:urban_project/screens/splash_screen.dart';
+import 'package:finlot/main.dart';
+import 'package:finlot/screens/home_screen.dart';
+import 'package:finlot/screens/onboarding_screen.dart';
+import 'package:finlot/screens/splash_screen.dart';
 
 void main() {
   testWidgets('FinlotApp initial splash and onboarding smoke test', (
