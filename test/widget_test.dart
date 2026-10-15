@@ -1,30 +1,38 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:urban_project/main.dart';
+import 'package:urban_project/screens/home_screen.dart';
+import 'package:urban_project/screens/onboarding_screen.dart';
+import 'package:urban_project/screens/splash_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('FinlotApp initial splash and onboarding smoke test', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const FinlotApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Initially displays the splash screen
+    expect(find.byType(SplashScreen), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Advance time past the splash delay (2200ms)
+    await tester.pump(const Duration(milliseconds: 2500));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify transition to OnboardingScreen
+    expect(find.byType(OnboardingScreen), findsOneWidget);
+    expect(find.text('Create Your Pool'), findsOneWidget);
+    expect(find.text('Continue'), findsOneWidget);
+  });
+
+  testWidgets('HomeScreen smoke test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const FinlotApp(home: HomeScreen()),
+    );
+
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.text('Vidhun'), findsOneWidget);
+    expect(find.text('Manage Pool'), findsOneWidget);
+    expect(find.text('Joined Pool'), findsOneWidget);
+    expect(find.text('Bike Pool'), findsOneWidget);
   });
 }

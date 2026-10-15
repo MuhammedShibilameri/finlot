@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../core/app_colors.dart';
 import '../models/pool.dart';
@@ -36,19 +36,27 @@ class _PoolDetailsScreenState extends State<PoolDetailsScreen> {
       body: GradientBackground(
         child: SafeArea(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 30),
             children: [
               _TopBar(onBack: () => Navigator.of(context).pop()),
-              const SizedBox(height: 12),
-              _HeaderCard(pool: widget.pool),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
+              _HeaderCard(
+                pool: widget.pool,
+                showEdit: _tab == 2,
+              ),
+              const SizedBox(height: 14),
               PillTabBar(
                 labels: const ['Transactions', 'Winners', 'Members'],
+                icons: const [
+                  Icons.bookmark_border_rounded,
+                  Icons.star_border_rounded,
+                  Icons.group_outlined,
+                ],
                 selectedIndex: _tab,
                 expand: true,
                 onChanged: (i) => setState(() => _tab = i),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _tabContent(),
             ],
           ),
@@ -66,7 +74,7 @@ class _TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 44,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -74,18 +82,23 @@ class _TopBar extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: GestureDetector(
               onTap: onBack,
+              behavior: HitTestBehavior.opaque,
               child: Container(
-                width: 32,
-                height: 32,
-                decoration: const BoxDecoration(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
                   color: AppColors.limeCard,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.chevron_left, size: 22),
+                child: const Icon(
+                  Icons.chevron_left_rounded,
+                  size: 26,
+                  color: AppColors.black,
+                ),
               ),
             ),
           ),
-          const FinlotLogo(size: 22),
+          const FinlotLogo(size: 26),
         ],
       ),
     );
@@ -94,23 +107,39 @@ class _TopBar extends StatelessWidget {
 
 class _HeaderCard extends StatelessWidget {
   final Pool pool;
+  final bool showEdit;
 
-  const _HeaderCard({required this.pool});
+  const _HeaderCard({
+    required this.pool,
+    this.showEdit = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.limeCard,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(26),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0C000000),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              DateBadge(day: pool.day, month: pool.month),
+              DateBadge(
+                day: pool.day.isEmpty ? '02' : pool.day,
+                month: pool.month.isEmpty ? 'OCT' : pool.month,
+                isGrid: pool.isGrid,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -119,8 +148,10 @@ class _HeaderCard extends StatelessWidget {
                     Text(
                       pool.name,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
+                        color: AppColors.black,
+                        letterSpacing: -0.3,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -128,14 +159,28 @@ class _HeaderCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if (showEdit)
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF2C2D2E),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.edit_outlined,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.white70,
-              borderRadius: BorderRadius.circular(18),
+              color: const Color(0xFFF4F7EB),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
               children: [
@@ -143,53 +188,47 @@ class _HeaderCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: StatItem(
-                        icon: Icons.emoji_events_outlined,
-                        iconColor: Colors.orange,
+                        type: StatType.drawsWon,
                         label: 'Draws won',
                         value: pool.drawsWon,
                       ),
                     ),
                     Expanded(
                       child: StatItem(
-                        icon: Icons.attach_money,
-                        iconColor: Colors.green,
+                        type: StatType.amount,
                         label: 'Amount',
                         value: pool.amount,
                       ),
                     ),
                     Expanded(
                       child: StatItem(
-                        icon: Icons.account_balance_wallet_outlined,
-                        iconColor: Colors.amber,
+                        type: StatType.lotAmount,
                         label: 'Lot Amount',
                         value: pool.lotAmount,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
                       child: StatItem(
-                        icon: Icons.autorenew,
-                        iconColor: AppColors.lime,
+                        type: StatType.poolType,
                         label: 'Pool Type',
                         value: pool.poolType,
                       ),
                     ),
                     Expanded(
                       child: StatItem(
-                        icon: Icons.group_outlined,
-                        iconColor: Colors.lightBlue,
+                        type: StatType.members,
                         label: 'Members',
                         value: pool.members,
                       ),
                     ),
                     Expanded(
                       child: StatItem(
-                        icon: Icons.grid_view,
-                        iconColor: Colors.pinkAccent,
+                        type: StatType.slotCount,
                         label: 'Slot Count',
                         value: pool.slotCount,
                       ),
@@ -199,11 +238,15 @@ class _HeaderCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Center(
             child: Text(
-              'Started on ${pool.startedOn}  •  valid till ${pool.validTill}',
-              style: const TextStyle(fontSize: 9, color: AppColors.grey),
+              'Started on ${pool.startedOn}  valid till ${pool.validTill}',
+              style: const TextStyle(
+                fontSize: 10,
+                color: Color(0xFF444444),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

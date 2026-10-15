@@ -3,6 +3,7 @@ class Pool {
   final String creator;
   final String day;
   final String month;
+  final bool isGrid;
   final String drawsWon;
   final String amount;
   final String lotAmount;
@@ -18,6 +19,7 @@ class Pool {
     required this.creator,
     required this.day,
     required this.month,
+    this.isGrid = false,
     required this.drawsWon,
     required this.amount,
     required this.lotAmount,

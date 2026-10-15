@@ -2,40 +2,56 @@ import 'package:flutter/material.dart';
 
 import '../core/app_colors.dart';
 
-/// Small tag such as "Half slot" (pink) or "Accepted" (green).
+/// Tag matching the slot, acceptance, and date badges from the reference designs.
 class SlotTag extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final IconData? icon;
   final bool positive;
+  final bool isTrophy;
 
   const SlotTag({
     super.key,
     required this.label,
-    this.icon = Icons.pie_chart_outline,
+    this.icon,
     this.positive = false,
+    this.isTrophy = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color fg = positive ? AppColors.green : AppColors.pink;
-    final Color bg = positive ? AppColors.greenSoft : AppColors.pinkSoft;
+    final bool isGreen = positive || isTrophy;
+    final Color fg = isGreen ? AppColors.green : const Color(0xFFFF5C8E);
+    final Color bg = isGreen ? const Color(0xFFE5F7EB) : const Color(0xFFFFEDF3);
+    final Color borderColor = isGreen
+        ? const Color(0xFFA6E7B6)
+        : const Color(0xFFFFBCCF);
+
+    IconData defaultIcon;
+    if (isTrophy) {
+      defaultIcon = Icons.emoji_events_rounded;
+    } else if (positive) {
+      defaultIcon = Icons.check_circle_outline_rounded;
+    } else {
+      defaultIcon = Icons.view_agenda_outlined;
+    }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: borderColor, width: 0.8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 10, color: fg),
-          const SizedBox(width: 3),
+          Icon(icon ?? defaultIcon, size: 11, color: fg),
+          const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w600,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
               color: fg,
             ),
           ),

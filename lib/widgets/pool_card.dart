@@ -17,18 +17,30 @@ class PoolCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: AppColors.limeCard,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(26),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0C000000),
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                DateBadge(day: pool.day, month: pool.month),
+                DateBadge(
+                  day: pool.day,
+                  month: pool.month,
+                  isGrid: pool.isGrid,
+                ),
                 const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,8 +48,10 @@ class PoolCard extends StatelessWidget {
                     Text(
                       pool.name,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
+                        color: AppColors.black,
+                        letterSpacing: -0.3,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -48,26 +62,30 @@ class PoolCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.white70,
-                borderRadius: BorderRadius.circular(18),
+                color: const Color(0xFFF4F7EB),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 children: [
                   Expanded(
-                    child: StatItem(label: 'Draws won', value: pool.drawsWon),
+                    child: StatItem(
+                      type: StatType.drawsWon,
+                      label: 'Draws won',
+                      value: pool.drawsWon,
+                    ),
                   ),
                   Expanded(
                     child: StatItem(
-                      icon: Icons.attach_money,
+                      type: StatType.amount,
                       label: 'Amount',
                       value: pool.amount,
                     ),
                   ),
                   Expanded(
                     child: StatItem(
-                      icon: Icons.attach_money,
+                      type: StatType.lotAmount,
                       label: 'Lot Amount',
                       value: pool.lotAmount,
                     ),
@@ -75,12 +93,12 @@ class PoolCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
+              padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(24),
               ),
               child: Row(
                 children: [
@@ -88,21 +106,22 @@ class PoolCard extends StatelessWidget {
                     child: Text(
                       pool.footerText,
                       style: const TextStyle(
-                        fontSize: 11,
-                        color: AppColors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
                       ),
                     ),
                   ),
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 36,
+                    height: 36,
                     decoration: const BoxDecoration(
                       color: AppColors.green,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
-                      Icons.arrow_outward,
-                      size: 16,
+                      Icons.arrow_outward_rounded,
+                      size: 18,
                       color: Colors.white,
                     ),
                   ),

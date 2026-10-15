@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../core/app_colors.dart';
 import '../data/mock_data.dart';
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _poolTab = 0; // 0 = Manage Pool, 1 = Joined Pool
-  int _navIndex = 1; // bottom nav: 0 swap, 1 home, 2 profile (only home built)
+  int _navIndex = 1; // 0 swap, 1 home, 2 profile
 
   void _openPool(Pool pool) {
     Navigator.of(context).push(
@@ -35,25 +35,35 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Stack(
             children: [
               ListView(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 110),
+                padding: const EdgeInsets.fromLTRB(18, 14, 18, 110),
                 children: [
                   const _Header(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   const Text(
                     "Glad you're here,",
-                    style: TextStyle(fontSize: 13, color: AppColors.grey),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF1E1E1E),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   const Text(
                     'Vidhun',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.black,
+                      letterSpacing: -0.3,
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   _UpcomingDrawCard(onViewPool: () => _openPool(bikePool)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   Row(
                     children: [
                       PillTabBar(
                         labels: const ['Manage Pool', 'Joined Pool'],
+                        icons: const [Icons.hexagon_outlined, null],
                         selectedIndex: _poolTab,
                         onChanged: (i) => setState(() => _poolTab = i),
                       ),
@@ -61,22 +71,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Text(
                         'View all',
                         style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.black,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
                   for (final pool in pools)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: PoolCard(pool: pool, onTap: () => _openPool(pool)),
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: PoolCard(
+                        pool: pool,
+                        onTap: () => _openPool(pool),
+                      ),
                     ),
                 ],
               ),
               Positioned(
-                bottom: 16,
+                bottom: 18,
                 left: 0,
                 right: 0,
                 child: Center(
@@ -102,19 +116,33 @@ class _Header extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CircleAvatar(
-          radius: 16,
-          backgroundColor: Colors.deepOrange.shade200,
-          child: const Icon(Icons.person, size: 18, color: Colors.white),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: Image.asset(
+            'assets/images/avatar_home_top.png',
+            width: 44,
+            height: 44,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => Container(
+              width: 44,
+              height: 44,
+              color: const Color(0xFFFFD1BD),
+              child: const Icon(Icons.person, color: Colors.white),
+            ),
+          ),
         ),
         Container(
-          width: 36,
-          height: 36,
-          decoration: const BoxDecoration(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
             color: AppColors.limeCard,
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(14),
           ),
-          child: const Icon(Icons.notifications_none, size: 20),
+          child: const Icon(
+            Icons.notifications_none_rounded,
+            size: 22,
+            color: AppColors.black,
+          ),
         ),
       ],
     );
@@ -129,77 +157,132 @@ class _UpcomingDrawCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(26),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0C000000),
+            blurRadius: 14,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.limeCard,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Upcoming Draw',
-                    style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'The pool draw for Bike Pool is happening tomorrow. Stay tuned!',
-                  style: TextStyle(fontSize: 11),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    OutlinedButton(
-                      onPressed: onViewPool,
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(0, 28),
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        foregroundColor: AppColors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Left content
+              Expanded(
+                flex: 6,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.limeCard,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text(
+                          'Upcoming Draw',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        'View Pool',
-                        style: TextStyle(fontSize: 10),
+                      const SizedBox(height: 10),
+                      RichText(
+                        text: const TextSpan(
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            color: AppColors.black,
+                            height: 1.35,
+                          ),
+                          children: [
+                            TextSpan(text: '⏳ The pool draw for '),
+                            TextSpan(
+                              text: 'Bike Pool',
+                              style: TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                            TextSpan(
+                              text: ' is happening tomorrow. Stay tuned!"',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: const BoxDecoration(
-                        color: AppColors.black,
-                        shape: BoxShape.circle,
+                      const SizedBox(height: 12),
+                      GestureDetector(
+                        onTap: onViewPool,
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 7,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF1F1F1),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                'View Pool',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: const BoxDecoration(
+                                color: AppColors.black,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_outward_rounded,
+                                size: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.arrow_outward,
-                        size: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+              // Right Lady Illustration
+              Expanded(
+                flex: 4,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Image.asset(
+                    'assets/images/lady_home.png',
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          // Placeholder for the illustration in the design.
-          const Icon(Icons.person_outline, size: 80, color: AppColors.black),
-        ],
+        ),
       ),
     );
   }
@@ -211,47 +294,85 @@ class _BottomNav extends StatelessWidget {
 
   const _BottomNav({required this.selectedIndex, required this.onChanged});
 
-  static const List<IconData> _icons = [
-    Icons.swap_horiz,
-    Icons.home_outlined,
-    Icons.person_outline,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(44),
         boxShadow: const [
           BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 16,
-            offset: Offset(0, 6),
+            color: Color(0x18000000),
+            blurRadius: 20,
+            offset: Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          for (int i = 0; i < _icons.length; i++)
-            GestureDetector(
-              onTap: () => onChanged(i),
-              child: Container(
-                width: 48,
-                height: 48,
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                decoration: BoxDecoration(
-                  color: i == selectedIndex
-                      ? AppColors.limeCard
-                      : Colors.transparent,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(_icons[i], color: AppColors.black),
-              ),
-            ),
+          // Swap / Transfer
+          _NavItem(
+            icon: Icons.swap_vert_rounded,
+            isSelected: selectedIndex == 0,
+            isHome: false,
+            onTap: () => onChanged(0),
+          ),
+          const SizedBox(width: 8),
+          // Home
+          _NavItem(
+            icon: Icons.home_rounded,
+            isSelected: selectedIndex == 1,
+            isHome: true,
+            onTap: () => onChanged(1),
+          ),
+          const SizedBox(width: 8),
+          // Profile
+          _NavItem(
+            icon: Icons.person_outline_rounded,
+            isSelected: selectedIndex == 2,
+            isHome: false,
+            onTap: () => onChanged(2),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final bool isSelected;
+  final bool isHome;
+  final VoidCallback onTap;
+
+  const _NavItem({
+    required this.icon,
+    required this.isSelected,
+    required this.isHome,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: 52,
+        height: 52,
+        decoration: BoxDecoration(
+          color: isHome
+              ? AppColors.limeCard
+              : (isSelected ? const Color(0xFFF0F0F0) : Colors.transparent),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          icon,
+          size: 24,
+          color: AppColors.black,
+        ),
       ),
     );
   }

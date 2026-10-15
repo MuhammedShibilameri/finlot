@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../core/app_colors.dart';
 import '../../data/mock_data.dart';
@@ -10,56 +10,88 @@ class MembersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          for (int i = 0; i < allMembers.length; i++) ...[
-            if (i > 0) const Divider(height: 16),
-            Row(
+    return Column(
+      children: [
+        for (final m in allMembers)
+          Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x08000000),
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
               children: [
-                MemberAvatar(name: allMembers[i].name),
-                const SizedBox(width: 10),
+                MemberAvatar(name: m.name, radius: 24),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        allMembers[i].name,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            m.name,
+                            style: const TextStyle(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.black,
+                            ),
+                          ),
+                          if (m.role != null) ...[
+                            const SizedBox(width: 4),
+                            Text(
+                              '• ${m.role}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF555555),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
-                      Text(
-                        allMembers[i].role ?? allMembers[i].phone,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: AppColors.grey,
-                        ),
-                      ),
-                      if (allMembers[i].amount.isNotEmpty)
+                      const SizedBox(height: 3),
+                      if (m.amount.isNotEmpty)
                         Text(
-                          allMembers[i].amount,
+                          m.amount,
                           style: const TextStyle(
-                            fontSize: 10,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                          ),
+                        )
+                      else
+                        Text(
+                          m.phone,
+                          style: const TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w500,
                             color: AppColors.grey,
                           ),
                         ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 6),
                       Row(
                         children: [
-                          const SlotTag(
-                            label: 'Accepted',
-                            icon: Icons.check_circle_outline,
-                            positive: true,
-                          ),
-                          const SizedBox(width: 6),
-                          SlotTag(label: allMembers[i].slot),
+                          if (m.date.isNotEmpty)
+                            SlotTag(
+                              label: m.date,
+                              positive: true,
+                            )
+                          else
+                            const SlotTag(
+                              label: 'Accepted',
+                              positive: true,
+                            ),
+                          const SizedBox(width: 8),
+                          SlotTag(label: m.slot),
                         ],
                       ),
                     ],
@@ -67,9 +99,8 @@ class MembersTab extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

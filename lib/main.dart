@@ -6,7 +6,9 @@ import 'screens/splash_screen.dart';
 void main() => runApp(const FinlotApp());
 
 class FinlotApp extends StatelessWidget {
-  const FinlotApp({super.key});
+  final Widget? home;
+
+  const FinlotApp({super.key, this.home});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class FinlotApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.lime),
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
+      home: home ?? const SplashScreen(),
     );
   }
 }
