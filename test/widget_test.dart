@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:finlot/main.dart';
 import 'package:finlot/screens/home_screen.dart';
 import 'package:finlot/screens/onboarding_screen.dart';
 import 'package:finlot/screens/splash_screen.dart';
+import 'package:finlot/widgets/coin_3d.dart';
 
 void main() {
   testWidgets('FinlotApp initial splash and onboarding smoke test', (
@@ -25,14 +27,24 @@ void main() {
   });
 
   testWidgets('HomeScreen smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const FinlotApp(home: HomeScreen()),
-    );
+    await tester.pumpWidget(const FinlotApp(home: HomeScreen()));
 
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.text('Vidhun'), findsOneWidget);
     expect(find.text('Manage Pool'), findsOneWidget);
     expect(find.text('Joined Pool'), findsOneWidget);
     expect(find.text('Bike Pool'), findsOneWidget);
+  });
+  testWidgets('Coin3D renders with 3D perspective transforms', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: Center(child: Coin3D(size: 50, yaw: 0.5, pitch: 0.2)),
+      ),
+    );
+
+    expect(find.byType(Coin3D), findsOneWidget);
   });
 }
