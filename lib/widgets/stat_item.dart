@@ -7,86 +7,126 @@ enum StatType { drawsWon, amount, lotAmount, poolType, members, slotCount }
 
 /// Rich graphical StatItem matching the reference graphics and typography.
 class StatItem extends StatelessWidget {
-  final StatType type;
+  final StatType? type;
+  final IconData? icon;
+  final Color? iconColor;
   final String label;
   final String value;
 
   const StatItem({
     super.key,
-    required this.type,
+    this.type,
+    this.icon,
+    this.iconColor,
     required this.label,
     required this.value,
   });
 
   Widget _buildGraphicIcon() {
-    switch (type) {
-      case StatType.drawsWon:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFE8EE),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFFFB5C8), width: 1),
-          ),
-          child: CustomPaint(painter: _DrawsWonGraphicPainter()),
-        );
-      case StatType.amount:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE2F7E7),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFA5E6B4), width: 1),
-          ),
-          child: CustomPaint(painter: _TwoCoinsGraphicPainter()),
-        );
-      case StatType.lotAmount:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF6D8),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFFFDF7D), width: 1),
-          ),
-          child: CustomPaint(painter: _MoneyPouchGraphicPainter()),
-        );
-      case StatType.poolType:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE7F8D8),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFBBE59B), width: 1),
-          ),
-          child: CustomPaint(painter: _CycleLoopGraphicPainter()),
-        );
-      case StatType.members:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE3F3FC),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFAED8F5), width: 1),
-          ),
-          child: CustomPaint(painter: _MembersClusterGraphicPainter()),
-        );
-      case StatType.slotCount:
-        return Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFECEE),
-            shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFFFBCC3), width: 1),
-          ),
-          child: CustomPaint(painter: _SlotStackGraphicPainter()),
-        );
+    StatType? resolvedType = type;
+    if (resolvedType == null) {
+      final l = label.toLowerCase();
+      if (l.contains('draws')) {
+        resolvedType = StatType.drawsWon;
+      } else if (l.contains('lot')) {
+        resolvedType = StatType.lotAmount;
+      } else if (l.contains('amount')) {
+        resolvedType = StatType.amount;
+      } else if (l.contains('pool')) {
+        resolvedType = StatType.poolType;
+      } else if (l.contains('member')) {
+        resolvedType = StatType.members;
+      } else if (l.contains('slot')) {
+        resolvedType = StatType.slotCount;
+      }
     }
+
+    if (resolvedType != null) {
+      switch (resolvedType) {
+        case StatType.drawsWon:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFE8EE),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFFFB5C8), width: 1),
+            ),
+            child: CustomPaint(painter: _DrawsWonGraphicPainter()),
+          );
+        case StatType.amount:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFE2F7E7),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFA5E6B4), width: 1),
+            ),
+            child: CustomPaint(painter: _TwoCoinsGraphicPainter()),
+          );
+        case StatType.lotAmount:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFF6D8),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFFFDF7D), width: 1),
+            ),
+            child: CustomPaint(painter: _MoneyPouchGraphicPainter()),
+          );
+        case StatType.poolType:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFE7F8D8),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFBBE59B), width: 1),
+            ),
+            child: CustomPaint(painter: _CycleLoopGraphicPainter()),
+          );
+        case StatType.members:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F3FC),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFAED8F5), width: 1),
+            ),
+            child: CustomPaint(painter: _MembersClusterGraphicPainter()),
+          );
+        case StatType.slotCount:
+          return Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFECEE),
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFFFBCC3), width: 1),
+            ),
+            child: CustomPaint(painter: _SlotStackGraphicPainter()),
+          );
+      }
+    }
+
+    return Container(
+      width: 26,
+      height: 26,
+      decoration: BoxDecoration(
+        color: (iconColor ?? AppColors.lime).withValues(alpha: 0.15),
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          icon ?? Icons.circle,
+          size: 14,
+          color: iconColor ?? AppColors.black,
+        ),
+      ),
+    );
   }
 
   @override
