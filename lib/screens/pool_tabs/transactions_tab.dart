@@ -53,17 +53,27 @@ class _TransactionsTabState extends State<TransactionsTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Month Selector
-          const Center(
+          Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.calendar_today_outlined,
-                  size: 15,
-                  color: AppColors.green,
+                Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: AppColors.limeCard,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.calendar_today_outlined,
+                      size: 14,
+                      color: AppColors.green,
+                    ),
+                  ),
                 ),
-                SizedBox(width: 8),
-                Text(
+                const SizedBox(width: 8),
+                const Text(
                   'September 2025',
                   style: TextStyle(
                     fontSize: 13,
@@ -71,8 +81,8 @@ class _TransactionsTabState extends State<TransactionsTab> {
                     color: AppColors.black,
                   ),
                 ),
-                SizedBox(width: 4),
-                Icon(
+                const SizedBox(width: 4),
+                const Icon(
                   Icons.keyboard_arrow_down_rounded,
                   size: 20,
                   color: AppColors.black,

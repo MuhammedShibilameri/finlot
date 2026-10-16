@@ -18,7 +18,6 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
   late final Animation<double> _fadeAnimation;
-  late final Animation<double> _glowAnimation;
 
   @override
   void initState() {
@@ -48,20 +47,6 @@ class _SplashScreenState extends State<SplashScreen>
       parent: _controller,
       curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
     );
-
-    // Subtle breath/glow intensity
-    _glowAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 1.0)
-            .chain(CurveTween(curve: Curves.easeIn)),
-        weight: 50,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 0.3)
-            .chain(CurveTween(curve: Curves.easeOut)),
-        weight: 50,
-      ),
-    ]).animate(_controller);
 
     _controller.forward();
 
@@ -95,11 +80,11 @@ class _SplashScreenState extends State<SplashScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFE2F2C5),
-              Color(0xFFF7FCEB),
+              Color(0xFFD6ECC9),
+              Color(0xFFEFF8E4),
               Colors.white,
             ],
-            stops: [0.0, 0.4, 0.85],
+            stops: [0.0, 0.45, 0.9],
           ),
         ),
         child: SizedBox.expand(
@@ -111,24 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _fadeAnimation,
                   child: ScaleTransition(
                     scale: _scaleAnimation,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(
-                              181,
-                              211,
-                              0,
-                              0.15 * _glowAnimation.value,
-                            ),
-                            blurRadius: 36,
-                            spreadRadius: 12,
-                          ),
-                        ],
-                      ),
-                      child: const FinlotLogo(size: 42),
-                    ),
+                    child: const FinlotLogo(size: 52),
                   ),
                 );
               },
