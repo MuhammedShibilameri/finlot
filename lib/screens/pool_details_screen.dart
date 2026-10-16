@@ -40,10 +40,7 @@ class _PoolDetailsScreenState extends State<PoolDetailsScreen> {
             children: [
               _TopBar(onBack: () => Navigator.of(context).pop()),
               const SizedBox(height: 14),
-              _HeaderCard(
-                pool: widget.pool,
-                showEdit: _tab == 2,
-              ),
+              _HeaderCard(pool: widget.pool, showEdit: _tab == 2),
               const SizedBox(height: 14),
               PillTabBar(
                 labels: const ['Transactions', 'Winners', 'Members'],
@@ -109,162 +106,187 @@ class _HeaderCard extends StatelessWidget {
   final Pool pool;
   final bool showEdit;
 
-  const _HeaderCard({
-    required this.pool,
-    this.showEdit = false,
-  });
+  const _HeaderCard({required this.pool, this.showEdit = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(32),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFD6EA4E), Color(0xFFE4F274)],
+        ),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x0E000000),
-            blurRadius: 12,
-            offset: Offset(0, 4),
+            color: Color(0x10000000),
+            blurRadius: 16,
+            offset: Offset(0, 6),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Upper yellow / lemon section
-            Container(
-              color: const Color(0xFFE4EE78),
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  DateBadge(
-                    day: pool.day.isEmpty ? '02' : pool.day,
-                    month: pool.month.isEmpty ? 'OCT' : pool.month,
-                    isGrid: pool.isGrid,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          pool.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.black,
-                            letterSpacing: -0.3,
-                          ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Upper yellow / lemon section
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                DateBadge(
+                  day: pool.day.isEmpty ? '02' : pool.day,
+                  month: pool.month.isEmpty ? 'OCT' : pool.month,
+                  isGrid: pool.isGrid,
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pool.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.black,
+                          letterSpacing: -0.3,
                         ),
-                        const SizedBox(height: 4),
-                        CreatorChip(name: pool.creator),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 5),
+                      CreatorChip(name: pool.creator),
+                    ],
                   ),
-                  if (showEdit)
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF2C2D2E),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.edit_outlined,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-
-            // Downside white section
-            Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                children: [
+                ),
+                if (showEdit)
                   Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F7EB),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.drawsWon,
-                                label: 'Draws won',
-                                value: pool.drawsWon,
-                              ),
-                            ),
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.amount,
-                                label: 'Amount',
-                                value: pool.amount,
-                              ),
-                            ),
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.lotAmount,
-                                label: 'Lot Amount',
-                                value: pool.lotAmount,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.poolType,
-                                label: 'Pool Type',
-                                value: pool.poolType,
-                              ),
-                            ),
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.members,
-                                label: 'Members',
-                                value: pool.members,
-                              ),
-                            ),
-                            Expanded(
-                              child: StatItem(
-                                type: StatType.slotCount,
-                                label: 'Slot Count',
-                                value: pool.slotCount,
-                              ),
-                            ),
-                          ],
+                    width: 36,
+                    height: 36,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2C2D2E),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x20000000),
+                          blurRadius: 6,
+                          offset: Offset(0, 2),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: Text(
-                      'Started on ${pool.startedOn}  valid till ${pool.validTill}',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Color(0xFF444444),
-                        fontWeight: FontWeight.w500,
-                      ),
+                    child: const Icon(
+                      Icons.edit_outlined,
+                      size: 17,
+                      color: Colors.white,
                     ),
                   ),
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          // Downside floating white section
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x0C000000),
+                  blurRadius: 12,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 14,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF3F7E8),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.drawsWon,
+                              label: 'Draws won',
+                              value: pool.drawsWon,
+                            ),
+                          ),
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.amount,
+                              label: 'Amount',
+                              value: pool.amount,
+                            ),
+                          ),
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.lotAmount,
+                              label: 'Lot Amount',
+                              value: pool.lotAmount,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Divider(
+                          height: 1,
+                          thickness: 0.6,
+                          color: Color(0x18000000),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.poolType,
+                              label: 'Pool Type',
+                              value: pool.poolType,
+                            ),
+                          ),
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.members,
+                              label: 'Members',
+                              value: pool.members,
+                            ),
+                          ),
+                          Expanded(
+                            child: StatItem(
+                              type: StatType.slotCount,
+                              label: 'Slot Count',
+                              value: pool.slotCount,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'Started on ${pool.startedOn}  valid till ${pool.validTill}',
+                    style: const TextStyle(
+                      fontSize: 10.5,
+                      color: Color(0xFF555555),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

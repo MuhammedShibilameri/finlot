@@ -93,9 +93,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
           const SizedBox(height: 14),
 
           // Pending section
-          _SectionChip(
-            label: 'Pending (${_pending.length}/$total)',
-          ),
+          _SectionChip(label: 'Pending (${_pending.length}/$total)'),
           const SizedBox(height: 8),
           if (_pending.isNotEmpty)
             Container(
@@ -118,7 +116,10 @@ class _TransactionsTabState extends State<TransactionsTab> {
                 itemBuilder: (_, index) {
                   final m = _pending[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 4,
+                    ),
                     child: Row(
                       children: [
                         MemberAvatar(name: m.name, radius: 22),
@@ -196,9 +197,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
           const SizedBox(height: 16),
 
           // Paid section
-          _SectionChip(
-            label: 'Paid (${_paid.length}/$total)',
-          ),
+          _SectionChip(label: 'Paid (${_paid.length}/$total)'),
           const SizedBox(height: 8),
           if (_paid.isNotEmpty)
             Container(
@@ -221,7 +220,10 @@ class _TransactionsTabState extends State<TransactionsTab> {
                 itemBuilder: (_, index) {
                   final m = _paid[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 4,
+                    ),
                     child: Row(
                       children: [
                         MemberAvatar(name: m.name, radius: 22),
@@ -250,10 +252,7 @@ class _TransactionsTabState extends State<TransactionsTab> {
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  SlotTag(
-                                    label: m.date,
-                                    positive: true,
-                                  ),
+                                  SlotTag(label: m.date, positive: true),
                                   const SizedBox(width: 6),
                                   SlotTag(label: m.slot),
                                 ],

@@ -251,10 +251,7 @@ class _WinnerListRow extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  SlotTag(
-                    label: date,
-                    isTrophy: true,
-                  ),
+                  SlotTag(label: date, isTrophy: true),
                   const SizedBox(width: 6),
                   SlotTag(label: slot),
                 ],

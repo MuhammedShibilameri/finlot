@@ -30,7 +30,7 @@ void main() {
     await tester.pumpWidget(const FinlotApp(home: HomeScreen()));
 
     expect(find.byType(HomeScreen), findsOneWidget);
-    expect(find.text('Vidhun'), findsOneWidget);
+    expect(find.text('Shibil'), findsOneWidget);
     expect(find.text('Manage Pool'), findsOneWidget);
     expect(find.text('Joined Pool'), findsOneWidget);
     expect(find.text('Bike Pool'), findsOneWidget);

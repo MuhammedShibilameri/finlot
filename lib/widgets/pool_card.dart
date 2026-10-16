@@ -6,7 +6,7 @@ import 'creator_chip.dart';
 import 'date_badge.dart';
 import 'stat_item.dart';
 
-/// Lime pool card shown on the home screen.
+/// Premium Lime & White Pool card matching the exact Figma reference graphics.
 class PoolCard extends StatelessWidget {
   final Pool pool;
   final VoidCallback onTap;
@@ -20,33 +20,36 @@ class PoolCard extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(32),
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFD6EA4E), Color(0xFFE4F274)],
+          ),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x0E000000),
-              blurRadius: 12,
-              offset: Offset(0, 4),
+              color: Color(0x10000000),
+              blurRadius: 16,
+              offset: Offset(0, 6),
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Upper yellow / lemon section
-              Container(
-                color: const Color(0xFFE4EE78),
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                child: Row(
-                  children: [
-                    DateBadge(
-                      day: pool.day,
-                      month: pool.month,
-                      isGrid: pool.isGrid,
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Upper Yellow / Lime section with 3D calendar, title & creator chip
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+              child: Row(
+                children: [
+                  DateBadge(
+                    day: pool.day,
+                    month: pool.month,
+                    isGrid: pool.isGrid,
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -58,95 +61,116 @@ class PoolCard extends StatelessWidget {
                             letterSpacing: -0.3,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 5),
                         CreatorChip(name: pool.creator),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
 
-              // Downside white section
-              Container(
+            // Floating White Container with rounded corners & soft shadow
+            Container(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF4F7EB),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: StatItem(
-                              type: StatType.drawsWon,
-                              label: 'Draws won',
-                              value: pool.drawsWon,
-                            ),
-                          ),
-                          Expanded(
-                            child: StatItem(
-                              type: StatType.amount,
-                              label: 'Amount',
-                              value: pool.amount,
-                            ),
-                          ),
-                          Expanded(
-                            child: StatItem(
-                              type: StatType.lotAmount,
-                              label: 'Lot Amount',
-                              value: pool.lotAmount,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF4F7EB),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              pool.footerText,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: const BoxDecoration(
-                              color: AppColors.green,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_outward_rounded,
-                              size: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x0C000000),
+                    blurRadius: 12,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-            ],
-          ),
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  // Upper inner stats container
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF3F7E8),
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: StatItem(
+                            type: StatType.drawsWon,
+                            label: 'Draws won',
+                            value: pool.drawsWon,
+                          ),
+                        ),
+                        Expanded(
+                          child: StatItem(
+                            type: StatType.amount,
+                            label: 'Amount',
+                            value: pool.amount,
+                          ),
+                        ),
+                        Expanded(
+                          child: StatItem(
+                            type: StatType.lotAmount,
+                            label: 'Lot Amount',
+                            value: pool.lotAmount,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // Lower inner action container
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF3F7E8),
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            pool.footerText,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: const BoxDecoration(
+                            color: AppColors.green,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x281C9E48),
+                                blurRadius: 8,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.arrow_outward_rounded,
+                            size: 19,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

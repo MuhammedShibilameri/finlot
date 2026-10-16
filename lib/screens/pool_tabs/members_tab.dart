@@ -81,15 +81,9 @@ class MembersTab extends StatelessWidget {
                       Row(
                         children: [
                           if (m.date.isNotEmpty)
-                            SlotTag(
-                              label: m.date,
-                              positive: true,
-                            )
+                            SlotTag(label: m.date, positive: true)
                           else
-                            const SlotTag(
-                              label: 'Accepted',
-                              positive: true,
-                            ),
+                            const SlotTag(label: 'Accepted', positive: true),
                           const SizedBox(width: 8),
                           SlotTag(label: m.slot),
                         ],

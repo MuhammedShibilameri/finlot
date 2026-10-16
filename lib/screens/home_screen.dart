@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const Text(
-                    'Vidhun',
+                    'Shibil',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w900,
